@@ -6,12 +6,14 @@ import "../styles/list.css";
 
 const List = ({ handleClick }) => {
 /* Initial States */
-const [products, setProducts] = useState(data); 
+const [products, setProducts] = useState([]); 
 
 /* Funtion for fetch the product list data */
 const fetchProductList = async () => {
   await client.get().then((res) => {
-  //  setProducts(res.data);
+    setProducts(res.data.map(obj => {
+      return {...obj, amount: 1}
+    }));
    }).catch(error => {
    console.log(error);
 })}
@@ -37,7 +39,7 @@ function selectFilter(e){
       <option value="Stone">Stone</option>
     </select>
     <section>
-      {products.map((item) => (
+      {products && products.map((item) => (
         <Cards key={item.id} item={item} handleClick={handleClick} />
       ))}
     </section>
